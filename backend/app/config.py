@@ -4,6 +4,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DB_PATH = BASE_DIR / "data" / "tco.db"
+DB_PATH.parent.mkdir(exist_ok=True)
 DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 EXPORTS_DIR = BASE_DIR / "exports"
