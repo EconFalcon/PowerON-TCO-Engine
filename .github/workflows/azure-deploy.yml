@@ -28,16 +28,6 @@ jobs:
       - name: Copy frontend build into backend
         run: cp -r frontend/dist backend/frontend_dist
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install backend dependencies
-        run: |
-          cd backend
-          pip install -r requirements.txt
-
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
