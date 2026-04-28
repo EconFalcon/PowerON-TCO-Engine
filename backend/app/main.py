@@ -37,8 +37,19 @@ def health():
     return {"status": "ok"}
 
 
-FRONTEND_DIST = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend", "dist"))
-if os.path.isdir(FRONTEND_DIST):
+# Look for frontend build in two locations:
+# - local dev: ../../../frontend/dist (relative to this file)
+# - Azure deployment: ./frontend_dist (copied there by GitHub Actions)
+_base = os.path.dirname(__file__)
+FRONTEND_DIST = next(
+    (p for p in [
+        os.path.abspath(os.path.join(_base, "..", "frontend_dist")),
+        os.path.abspath(os.path.join(_base, "..", "..", "frontend", "dist")),
+    ] if os.path.isdir(p)),
+    None,
+)
+
+if FRONTEND_DIST:
     app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIST, "assets")), name="assets")
 
     @app.get("/{full_path:path}")
